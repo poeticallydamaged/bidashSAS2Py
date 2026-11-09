@@ -1,0 +1,793 @@
+USE CASE GUIDE
+A modern data and AI platform
+An end-to-end overview of the data and AI life cycle,
+based on a financial-sector use case
+2
+Table of Contents
+Introduction to the data and AI lifecycle .............................................................................................. 3
+The three main stages of the data and AI life cycle ........................................................................................................ 3
+Manage data ................................................................................................................................................................................. 3
+Develop models ............................................................................................................................................................................ 4
+Deploy insights.............................................................................................................................................................................. 4
+About SAS Viya and SAS Viya for Learners ..................................................................................................................... 5
+Business scenario ........................................................................................................................................................ 5
+Some background information and your role .................................................................................................................................. 5
+Key questions ................................................................................................................................................................................ 5
+The home equity dataset .............................................................................................................................................. 5
+Prerequisites to make practicing straightforward .......................................................................................................... 6
+Task 0: Customize the VFL environment .............................................................................................. 7
+Step-by-step instructions ............................................................................................................................................. 7
+About SAS Studio ....................................................................................................................................................... 12
+Coding in SAS Viya for Learners .................................................................................................................................. 12
+Which programs should you consider executing in CAS? ............................................................................................................... 13
+Task 1: Import and load data ............................................................................................................. 14
+Step-by-step instructions ........................................................................................................................................... 14
+About SAS Visual Analytics ......................................................................................................................................... 16
+About automatic charts. ............................................................................................................................................. 17
+Task 2: Design a BI dashboard ........................................................................................................... 17
+Step-by-step instructions ........................................................................................................................................... 17
+The automated explanation object.............................................................................................................................. 25
+Task 3: Investigate using an automated explanation .......................................................................... 26
+Step-by-step instructions ........................................................................................................................................... 26
+Task 4: Explore a data mining and machine learning pipeline ............................................................. 28
+Step-by-step instructions ........................................................................................................................................... 29
+Trustworthy AI across the data and AI life cycle ........................................................................................................... 50
+Task 5: View a model card ................................................................................................................. 51
+Step-by-step instructions ........................................................................................................................................... 51
+Task 6: Create a decision flow ........................................................................................................... 52
+Step-by-step instructions ........................................................................................................................................... 52
+Appendix ......................................................................................................................................... 56
+Recommendations for self-study. ............................................................................................................................... 56
+This document was written by Jos van der Velden.
+This guide provides step-by-step instructions that introduce the end-to-end data and AI life cycle
+through a real-world use case from the financial sector. You can complete the tasks during a hands-on
+workshop or classroom session using SAS Viya for Learners.
+Copyright © 2026 SAS Institute Inc. All rights reserved.
+3
+Introduction to the data and AI lifecycle
+This section briefly describes the data and AI life cycle and its three stages. The data and AI life cycle,
+as shown in Figure 1, illustrates the process of starting with a question to reach an actionable decision
+and has three stages.
+Figure 1: The data and AI life cycle
+The three main stages of the data and AI life cycle
+The three stages are manage data, develop models and deploy insights. The tools and platforms used
+by data and AI practitioners help them move through these stages.
+SAS Viya for Learners (VFL) gives educators and students one environment in which they can work
+through all three stages. This use case introduces each stage. A workshop or classroom session might
+not provide enough time to explore every feature in depth, so the guide also links to courses and
+activities for further practice.
+For an introductory video series about the data and AI life cycle, watch the SAS Viya Quick Start
+Tutorials. You can find them on YouTube via this link.
+Manage data
+Figure 2: The manage data stage and its graphical VFL user interfaces
+The first stage in the data and AI life cycle is manage data. This stage focuses on accessing, exploring,
+governing, and preparing raw data so it can be trusted and used effectively for analytics and AI. By
+improving the quality, context, and usability of data, organizations can build greater data intelligence
+and make more informed decisions.
+4
+The manage data stage is typically handled by data engineers, analytics engineers, and data analysts.
+They are responsible for transforming raw data into trusted, analytics-ready assets by profiling,
+governing, and preparing data. This work makes the data suitable for reporting, analytics, AI, and
+decision-making.
+Develop models
+Figure 3: The develop models stage and its graphical VFL user interfaces
+The second stage in the data and AI life cycle is develop models. This stage focuses on exploring
+prepared data, selecting appropriate techniques and building models that can be used to answer
+business questions or make predictions.
+The develop models stage is most commonly handled by data scientists or advanced analysts. These
+personas are responsible for applying statistical and machine learning techniques to data, validating
+results and translating model outcomes into insights that can be operationalized or shared with the
+business.
+Deploy insights
+Figure 4: The deploy insights stage and its graphical VFL user interfaces
+The final stage in the data and AI life cycle is deploy insights. This stage focuses on operationalizing
+analytics at scale, putting models and decision logic into production so insights can drive consistent,
+real-world actions.
+The deploy insights stage typically involves two key personas: MLOps engineers, who are responsible
+for deploying models, managing versions, monitoring performance and maintaining reliability across
+environments; and business analysts or decision designers, who design, test and govern decision flows
+that translate analytics into clear, consistent business actions.
+5
+About SAS Viya and SAS Viya for Learners
+SAS Viya is SAS’s modern analytics platform for working with data, statistics, machine learning and
+artificial intelligence. It provides an integrated environment where you can explore data, build
+analytical models and turn data into useful insights.
+SAS Viya for Learners gives students and educators access to SAS Viya in a learning environment. It
+allows you to gain hands-on experience with SAS technology and apply what you learn in courses,
+exercises and projects.
+Business scenario
+Throughout this use case, one business scenario demonstrates the complete data and AI life cycle,
+from accessing data to designing a decision flow.
+Some background information and your role
+Imagine the following story. You work as a data analyst at a large bank. The bank offers home equity
+loans to customers who use the value of their home as collateral. Leadership wants to improve loan
+approval decisions to reduce default risk and maximize profitability.
+Because this use case is about lending decisions, we must also think about responsible AI. A model
+may help estimate risk, but it should not be used blindly. We need to consider fairness, transparency,
+data quality, legal requirements, and possible bias in the data.
+Your objectives are to evaluate past loan performance, identify factors associated with repayment,
+build a model that estimates the likelihood of repayment, and use the model to support future lending
+decisions.
+Key questions
+• Which customer characteristics are most predictive of repayment?
+• How can we balance approval rates with risk management?
+• What metrics should be used to evaluate model performance?
+The data is stored in a table named HOMEEQUITY. The table includes information about the applicant,
+loan details, and repayment result.
+As you work through the data and AI life cycle, we will use applications and features available in a
+modern data and AI platform to answer these key questions and achieve our primary objectives.
+The home equity dataset
+During the practice, you import the HOMEEQUITY dataset from a comma-seperated value (CSV) file.
+The import will be done using the HTTP procedure and will import the file from this URL. The file is
+stored on the SAS support website. The text box shows the first three lines of the file.
+BAD,LOAN,MORTDUE,VALUE,REASON,JOB,YOJ,DEROG,DELINQ,CLAGE,NINQ,CLNO,DEBTINC,APPDATE,CITY,STATE,DIVISION,REGION
+1,1100,25860,39025,HomeImp,Other,10.5,0,0,94.366666667,1,9,,22040,oregon,Wisconsin,East North Central,Midwest
+1,1300,70053,68400,HomeImp,Other,7,0,2,121.83333333,0,14,,22229,churchton,Maryland,South Atlantic,South
+A data dictionary is a useful document or table that outlines the structure, content, and variable
+definitions for a dataset or collection of data. A data dictionary is a critical tool for reproducibility
+because it allows others to understand your data.
+In legacy systems, datasets often have cryptic names for the tables and variables. In practice,
+especially when you are asked to work with an existing dataset from a legacy system, a data dictionary
+is a valuable. If it doesn’t exist, you should create one. Often this involves interviewing the dataset
+owner or a long-term employee/colleague and can require serious time investment.
+6
+Table 1: Data dictionary for the HOMEEQUITY dataset
+Name Label Model role Measurement Explanation
+level
+BAD Loan Status Target Binary 1 = applicant defaulted on loan or
+is seriously delinquent;
+0 = applicant is current on loan
+payments
+CLAGE Age of oldest credit line in months Input Interval Number of months since the
+applicant’s oldest credit line was
+opened.
+CLNO Number of credit lines Input Interval
+DEBTINC Debt-to-income ratio Input Interval
+DELINQ Number of delinquent credit lines Input Interval
+DEROG Number of derogatory reports Input Interval
+JOB Occupational category Input Nominal
+LOAN Requested loan amount Input Interval
+MORTDUE Amount due on existing mortgage Input Interval
+NINQ Number of recent credit inquiries Input Interval
+REASON Reason for the loan request Input Binary DebtCon = debt consolidation;
+HomeImp = home improvement
+VALUE Value of current property Input Interval
+YOJ Years at present job Input Interval
+APPDATE Application date Rejected
+CITY * City Rejected
+STATE * State Rejected
+DIVISION * Division Rejected
+REGION * Region Rejected
+*) These columns were added to the original dataset and filled with sample data, to support 1) the
+creation of a geographical hierachy, and 2) the use of a geograhical map in a visual analytics report or
+dashboard.
+Prerequisites
+This document assumes you have gone through the steps demonstrated and explained in the video
+playlist Getting started with SAS for students. Before you continue, make sure that you have:
+1. Installed and configured a browser for use with SAS’ academic resources. This browser, either
+Google Chrome or Mozilla Firefox, must be configured with English as the primary language.
+Automatic or AI assisted translations should be blocked or disabled in the browser settings. The
+videos in the playlist explain why this is essential!
+2. Created a profile for accessing SAS resources with your academic email.
+3. Access to SAS Skill Builder for Students.
+4. Access to SAS Viya for Learners.
+NOTE: If you have not completed these four steps, complete them before you continue!
+The screenshots and screen excerpts in this guide were captured while using SAS Studio as a
+Progressive Web App (PWA). The PWA can provide improved session persistence, faster performance,
+a desktop-like experience, and support for multiple instances. You can install the PWA by using the
+install this app option in your browser address bar.
+7
+Task 0: Customize the VFL environment
+To ensure that everyone uses a similar SAS Viya for Learners environment, first change several user
+settings. These settings affect features used later in the exercises. If you skip them, some steps might
+not work as described.
+Some tasks require you to enter text or open a webpage. Use the file HOMEEQUITYuseCASEhelpfile.txt
+if you prefer to copy and paste the required text.
+Step-by-step instructions
+1. Go to https://learn.sas.com/my . This page is also known as My Training.
+Figure 5: My Training
+2. Click SAS Viya for Learners.
+3. Click Launch Software.
+8
+4. In the upper-right corner of the SASLanding page, select your profile icon. It appears next to
+the Search, Notifications, and Help icons to open the options menu for the SASLanding page.
+In the illustration below this is the M.
+Figure 6: Launch Software
+Figure 7: Open the GUI options menu and select Settings.
+5. Select Settings.
+6. Under Global select Region and language.
+Figure 8: Customizing the language settings
+7. Select English (United States) for both fields:
+a. Locale for regional formats and sorting:; and
+b. Locale for offline processes:.
+8. Click Close.
+9
+9. Open Applications menu (nine dots).
+Figure 9: Open SAS Studio GUI via the applications menu option Develop Code and Flows.
+10. Select Develop Code and Flows.
+11. Click the letter on the top right of the page to open the options menu. This is similar to step 4.
+12. Click Settings to review the settings for SAS Studio.
+13. Under SAS Programs select Code and Log.
+Figure 10: Change the detail tab layout to optimize workspace for SAS Studio.
+14. Change Detail tab layout: to Standard.
+15. Click Close.
+10
+16. Open Applications menu (nine dots).
+Figure 11: Open SAS Intelligent Decisioning GUI via the applications menu option Build Decisions.
+17. Select Build Decisions.
+18. Click the letter on the top right of the page to open the options menu. This is similar to step 4.
+19. Click Settings to review the settings for SAS Intelligent Decisioning.
+20. Under SAS Intelligent Decisioning select General.
+Figure 12: Enable automatic creation of variables used in decision flows.
+21. Check the box for Create variables automatically in decisions.
+22. Click Close.
+23. Open Applications menu (nine dots).
+Figure 13: Open SAS Visual Analytics GUI via the applications menu item Explore and Visualize.
+11
+24. Select Explore and Visualize.
+25. Click the letter on the top right of the page to open the options menu. This is similar to step 4.
+26. Click Settings to customize the settings for SAS Visual Analytics.
+27. Under SAS Visual Analytics select Modeling.
+Figure 14: Enable automatic conversion of measure variables with two levels to category.
+28. Check Automatically convert measure variables with two levels to category.
+29. Click Close.
+You have now completed the essential customization steps. The hands-on work begins with Task 1.
+You will run an existing SAS program to import data from a CSV file and load the resulting table into
+memory. You will perform these steps in the application named SAS Studio.
+12
+About SAS Studio
+SAS Studio is a development application for SAS that you access through your web browser. With SAS
+Studio, you can access your data files, libraries, and existing programs, and you can write new
+programs. You can also organize your work in flows and use the predefined steps in SAS Studio to
+generate SAS code. When you run a program, query, or flow, SAS Studio connects to a SAS server to
+process the SAS code. The SAS server can be a hosted server in a cloud environment or a remote server
+in your local environment. After the code is processed, the results are returned to SAS Studio in your
+browser.
+In short, SAS Studio is the main coding environment for SAS. You can write SAS programs or use
+graphical, low-code and no-code features. Recent releases also include Copilot-assisted code
+development. In the most recent release, the product name changed to SAS Data and AI Studio.
+Figure 15: SAS Studio on the applications menu in SAS Viya.
+Link to the documentation: SAS Studio User’s Guide.
+Coding in SAS Viya for Learners
+Figure 16: SAS Viya; multiple languages in a single architecture.
+13
+In SAS Viya for Learners, actions in the graphical applications are also driven by code. You can write
+programs yourself, or an application can generate code from your point-and-click actions. SAS Viya
+supports SAS, Python, R, SQL, REST APIs, and other languages in one analytics environment.
+The SAS Viya platform includes two servers, the SAS Compute Server and SAS Cloud Analytics
+Services, or CAS. The Compute Server is equivalent to the SAS®9 workspace server, and it executes
+your traditional SAS code with few or modifications. The high-performance processing power of the
+SAS Viya platform is the CAS server. CAS provides the runtime environment for data management and
+analytics with SAS. CAS is fast, reliable, and fault-tolerant. In other words, it’s ideal for rapid processing
+of very large data for both data management and analytics.
+Figure 17: SAS Compute Server and SAS Cloud Analytic Services (CAS).
+Which programs should you consider executing in CAS?
+The answer is ”it depends.” As you work in your SAS Viya for Learners environment and consider writing
+or modifying programs to run in CAS, there are a few best practices to consider. CAS generally
+outperforms the Compute Server if you have programs that read data into memory multiple times,
+steps that take a long time to run, PROCs that are computationally demanding, or DATA steps with
+complex logic. You also want to use CAS to prepare data for use in other SAS Viya applications, such as
+SAS Visual Analytics, or if you need a specific CAS action that does not have an equivalent procedure
+on the Compute Server.
+Figure 18: When should you consider to execute code in CAS.
+14
+Task 1: Import and load data
+In this task, you learn how data enters SAS Viya. Reports and models can be created only after the data
+is available in the correct location and format. You import the HOMEEQUITY dataset from a CSV file,
+enrich it, and load it into SAS Cloud Analytic Services (CAS) by running an existing SAS program.
+Step-by-step instructions
+These instructions assume you have already entered a SAS Viya for Learners session.
+1. Open Applications menu (nine dots).
+2. Select Develop Code and Flows.
+Figure 19: SAS Studio with expanded left menu and the item SAS Server selected.
+3. Open the SAS Server navigation/explorer pane if it does not open.
+TIP1: Use the progressive webapp (PWA) for SAS Studio, a full HD or higher resolution monitor
+and expand the app to full screen to make efficient use of the workspace.
+TIP2: To view the menu item labels, expand the left menu with the double arrows symbol [»] on
+the bottom left side of the screen.
+TIP3: To close the labels use double arrows symbol [«].
+4. In the SAS Server explorer pane, use the greater than symbol [>] to expand the folder hierarchy.
+5. Expand the folders Files → Home → Courses → ACADEMIC → workshops.
+15
+Figure 20: Navigation to the SAS program in the SAS Server pane.
+6. Double-click the SAS program named Import_and_load_HOMEEQUITY1.sas.
+7. The program is opened in the main canvas, that features a program editor.
+Figure 22: The opened SAS program and the running man icon.
+Figure 21: Message displayed after successful execution of the SAS program.
+8. To run the SAS program click the Run button, which has a running man icon, on the top left.
+9. The Results tab opens and allows you to scroll through the formatted output. The output was
+produced by the contents procedure, one of the procedure steps in the program.
+16
+10. The Log tab houses the SAS log, that displays information, warning, and error messages as a
+result of executing SAS programs or SAS global statements.
+11. The dataset that was imported can be seen in the Output Data tab.
+12. If you want to review the code you can return to the Code tab. It has a color-coded, syntax-
+checking editor for editing new or existing SAS programs.
+TIP: To analyse in detail what the code, log, results, and output data tabs hold, you can review the
+documentation via the links provided here.
+If you want to understand the SAS code in more detail, you can download a fully commented version of
+the program here: Import_and_load_HOMEEQUITY.sas.txt. If you want to develop strong SAS
+programming skills, complete courses 1 through 3 in the appendix.
+The final procedure in the program loads the imported, transformed, and enriched data into memory on
+the CAS server. It uses your personal CAS library, or caslib, named CASUSER. In SAS Viya for Learners,
+this caslib is usually displayed as CASUSER(your-email). You can now use the HOMEEQUITY table in
+SAS Visual Analytics.
+About SAS Visual Analytics
+Integrated throughout the data and AI life cycle is the need to explore and visualize data. It is a critical
+part of all phases: manage data, develop models, and deploy insights. The SAS Viya application that
+makes this possible is SAS Visual Analytics. SAS Visual Analytics supports data exploration, interactive
+reports, dashboards, and self-service analytics. It enables you to visualize and discover relevant
+relationships in your data, create and share interactive reports and dashboards, and use self-service
+analytics to quickly assess probable outcomes.
+Figure 23: A dashboard created with SAS Visual Analytics.
+Link to the documentation: https://documentation.sas.com/doc/en/vacdc/v_038/vawlcm/home.htm.
+17
+About automatic charts.
+In Task 2, you mainly use the automatic chart feature in SAS Visual Analytics. It is useful when you start
+a report because SAS Visual Analytics selects a chart type based on the data items that you drag onto
+the canvas.
+Data items Chart type
+One measure Histogram
+One category and any number of measures Bar chart
+One datetime category and any number of measures Time series plot
+One date or datetime category and one or more categories List table
+One geography and up to two measures Geo map
+One geography and three or more measures Bar chart
+One hierarchy and any number of measures Bar chart
+One hierarchy, one or more categories, and any number of
+Crosstab
+other data items
+Two or more hierarchies and any number of other data items Crosstab
+Two or more categories and any number of measures List table
+Two or three measures Scatter plot or Heat map
+Four or more measures Scatter plot or Correlation matrix
+Task 2: Design a BI dashboard
+In this task, you create a dashboard. First, you add the data source and adjust metadata for selected
+variables. Next, you use automatic charts to create four visualizations, link the charts so that they
+interact, and change one visualization to a different chart type.
+Step-by-step instructions
+These instructions assume you have already entered a SAS Viya for Learners session.
+1. Open Applications menu (nine dots).
+2. Select Explore and Visualize.
+3. Click New report.
+Figure 24: Create a new report.
+4. Click Add data.
+18
+5. In the Choose Data dialog search for HOMEEQUITY.
+Figure 25: Add data and search for the HOMEEQUITY table.
+6. Select the home equity dataset from your CAUSER library. Select the table in the CASUSER
+library that includes your email address in parentheses.
+Figure 26: The Choose Data dialog.
+7. Click Add.
+8. In the Data pane, verify the variables under the classifications Category and Measure.
+19
+9. Hover over the variable City to verify the metadata for the variable.
+Figure 27: Metadata for the City variable.
+10. Scroll down to the variables classified as Measure.
+11. Hover over the variable Age of Oldest Credit Line to verify the metadata for the variable.
+Figure 28: Metadata for the Age of Oldest Credit Line variable.
+12. Right-click Age of Oldest Credit Line and click on Measure with same aggregation in the
+Select submenu.
+Figure 29: Select measures with same aggregation.
+20
+13. Right-click Age of Oldest Credit Line and click on Average in the Aggregation submenu.
+14. Click Clear Selection (11).
+Figure 30: Change aggregation to average.
+15. Right-click Loan Application Date and in the Format submenu click on MMMYYYY (MONYY7).
+Figure 31: Change the format for the Loan Application Date variable.
+21
+16. Click Save and type the name Home Equity Analysis Report and click Save.
+Figure 33: Add the first auto chart to the report canvas.
+Figure 32: Name and save the report.
+17. Drag-and-drop Loan Status to the report canvas to add the first auto chart.
+18. Drag-and-drop Amount of Loan Request to the right side of the chart.
+NOTE: The light blue rectangle should cover only the right half of the chart when you drop it.
+22
+19. Drag-and-drop Loan Application Date to the bottom half of the Amount of Loan Request
+histogram.
+Figure 34: Drag-and-drop the next variable to the report canvas.
+20. Right-click Age of Oldest Credit Line and in the Select submenu click on Measure with same
+aggregation.
+21. Drag-and-drop them on the bottom half of the Loan Status chart.
+Figure 35: Add the fourth auto chart to the report canvas.
+23
+22. Select the Loan Status chart.
+Figure 36: Page 1 with the selected Loan Status chart.
+23. Click the options menu icon [ ⁝ ] and in the Change Bar chart to submenu select Pie chart.
+Figure 37: Change a bar chart to a pie chart.
+24. With the Pie chart still selected open the Options item in the right side menu.
+25. Scroll down to the Data labels section and check the field Percent of total.
+26. For the Data label text style section change the size to 16, the style to Bold [ B ], and change
+the color to Deep purple.
+24
+27. For the Data label location select Outside.
+Figure 38: Customize the labels in the pie chart.
+28. With the Pie chart still selected open the Actions item in the right side menu.
+29. Check the box for the field Automatic actions on all objects.
+Figure 39: Define automatic actions on all object with the pie chart selected.
+30. Click the Page 1 menu icon [ ⁝ ] and rename the page to Interactive charts.
+31. Click Save to complete the task.
+32. Click the pencil icon on the top left to switch from editing mode to viewing mode.
+NOTE: To return to editing mode just click the pencil icon.
+25
+33. Explore the interactive report. Select values in different charts and observe how the other
+charts respond.
+Figure 40: The saved report with a focus on applicants that defaulted on the loan.
+Reflection question: Which chart helped you understand the loan data most quickly? Why?
+For those interested in understanding the essential features in SAS Visual Analytics we recommend
+completing courses 4 and 5 from the appendix.
+The automated explanation object
+An automated explanation helps you explore possible reasons behind a result. In this workshop, the
+target or response variable is Loan Status. The automated explanation helps us identify which
+variables may be related to the target variable. This does not prove cause and effect, but it gives us a
+useful starting point for further analysis.
+An automated explanation object determines the most important underlying factors for a specific
+response variable. The results include relative importance, relationship plots, and the highest and
+lowest groups.
+The automated explanation object displays the following information:
+• Summary information about the response factor. If you assign a data item to the time role, then
+forecast information is displayed.
+• A relative importance score for each underlying factor appears in a bar chart. The most
+important underlying factor is assigned a score of 1, and all other scores are proportional to
+that value.
+• If you select show high and low groups, then groups are displayed in the high tab and the low
+tab. Groups are calculated based on the selected underlying factor.
+26
+• Several decision trees are run on the specified response variable, and each group describes a
+leaf from one of those decision trees. For measure responses, the three groups that result in
+the highest average values of the response are displayed on the high tab. The three groups that
+result in the lowest average values of the response are displayed on the low tab. For category
+responses, the three groups that contain the highest percentage of the selected event level of
+the response are displayed on the high tab. The three groups that contain the lowest
+percentage of the selected event level of the response are displayed on the low tab. The high
+tab and the low tab display only groups that include the selected factor in the calculation of the
+group.
+• A relationship plot for the selected underlying factor. The contents of this plot depend on the
+variable type of both the response variable and the selected underlying factor. The following
+table indicates which plot is used for each combination of response variable and underlying
+factor.
+Link to the documentation:
+https://documentation.sas.com/doc/en/vacdc/v_038/vaobj/n0ewwfd6udhv7qn1nropd18lof9j.htm.
+Task 3: Investigate using an automated explanation
+In this task, you add a page that contains an automated explanation object.
+Step-by-step instructions
+These instructions assume you have already entered a SAS Viya for Learners session.
+1. Return to the report and if necessary, activate editing mode by clicking the pencil icon.
+2. Open the Data pane and right-click on Loan Status.
+3. In the Explain submenu select Explain on new page.
+Figure 41: Create a new page with an automated explanation.
+4. Wait while the new page loads and then rename the page to Explain Loan Status.
+27
+5. On the top right select 1.
+NOTE: By selecting 1 we focus on the participants who defaulted on the loan.
+Figure 42: Focus on characteristics of participants that defaulted on the loan.
+6. Analyse the page and focus on:
+a. The text provided via Natural Language Generation (NLG) on the top and bottom right.
+NOTE: The texts are highlighted with light blue in the illustration below. The generated
+text summarizes the results of the algorithm.
+b. The changes when selecting other variables in the bar chart with factors on the left.
+7. Click Maximize (the icon with diagonal arrows under the three vertical dots).
+Figure 43: Maximize the view for the object.
+28
+Figure 44: The maximized view for the automated explanation object.
+8. Review the information provided in the four tabs named:
+a. Explanation Description
+b. Screening results
+c. Relative Importance
+d. Anomalies
+9. Click Minimize and Save the report to complete this task.
+Course 7, listed in the appendix, provides statistical background information that is essential for
+working with the automated explanation and the other features that are shown in the next task.
+Task 4: Explore a data mining and machine learning pipeline
+In this task, you use Copilot as an assistant to create data mining and machine learning pipelines. You
+also compare several models and pipelines, including one that contains an open-source model. During
+preparation steps 1 through 7, you use SAS Information Catalog to analyze the data. This step is
+essential to provide copilot with metadata about the dataset. Copilot uses this to guide the advice
+creation.
+In this section whenever you encounter *CC*_*UNI*_*MMMYY*_*yourinitials* you must replace:
+• *CC* with your country code (in this document PT);
+• *UNI* with two or three characters that inidicate your institution or study program (in this
+document SAS);
+• *MMMYY* with the a three character month abbreviation, followed by the year with two digits
+(in this document NOV26);
+• *yourinitials* with two or three characters that represent your initials (in this document JDV).
+29
+Step-by-step instructions
+These instructions assume you have already entered a SAS Viya for Learners session.
+1. Open Applications menu.
+2. Click Discover Information Assets.
+3. Search HOMEEQUITY.
+4. Select the home equity table from CASUSER(your_email).
+5. In Actions select Analyze data.
+Figure 45: Selecting the action Analyze data for the CASUSER(your_email) table.
+6. Click Submit request.
+7. Verify the process completed successfully.
+Figure 46: After you've submitted the analysis request you should wait till the message box appears.
+8. Open Applications menu.
+9. Select Build Models.
+10. Click New project.
+11. As Name use *CC*_*UNI*_*MMMYY*_*yourinitials*_HOMEEQUITYuseCASE.
+30
+12. Next to the Data fileld click Browse.
+Figure 47: In the New Project dialog box click Browse for the Data field.
+13. Search and select HOMEEQUITY in CASUSER(your_email).
+14. Click OK.
+Figure 48: Select the HOMEEQUITY table in CASUSER(your_email) and click OK.
+31
+15. Click Save.
+Figure 50: Save the new project.
+16. Select BAD and change the Role to Target.
+Figure 49: Change the role for the BAD variable.
+32
+17. Make sure BAD is not selected and then select JOB to change its Role to Rejected.
+Figure 51: Unselect BAD before changing the role of JOB.
+18. Check the box for Assess this variable for Bias.
+Figure 52: Check the box to assess for bias for the JOB variable.
+19. Clear variable selection by double-clicking the top checkbox.
+33
+20. Go to the Pipelines tab.
+Figure 53: Deselect all variables before selecting the Pipelines tab.
+21. Open the Copilot side pane.
+Figure 54: Click the copilot icon to open the copilot side pane.
+22. Click Run this node.
+Figure 55: Run the selected Data node.
+23. Wait for green check mark.
+24. Type Suggest next node and click Send or press [enter].
+Figure 56: After the checkmark appears ask copilot to suggest the next node.
+34
+25. Click Start exploration.
+26. Click Add Feature Machine and Gradient Boosting Nodes (or the node(s) that has the highest
+KS in your session).
+27. Click Run node(s).
+28. Click 3 dots and select Rename.
+29. Type *CC*_*UNI*_*MMMYY*_*yourinitials*_Copilot_Pipeline and click OK.
+Figure 57: Start the exploration.
+Figure 58: Add the node(s) and rename the pipeline.
+30. In the Copilot side pane type Add a logistic regression node and click Run node.
+31. Type Improve the model and press [enter].
+NOTE: This step takes a while to complete, so we can add another pipeline while this step
+completes.
+Figure 59: Add a logistic regression node, run it, and improve the model.
+32. If you have a small monitor hide the Copilot side pane.
+33. Click + to add a new pipeline.
+34. Click Browse, search for advanced and select Advanced template for class target.
+35. Click OK.
+35
+36. Name it Advanced template for class target and click Save.
+Figure 60: Add a new pipeline.
+37. Click Run pipeline.
+Figure 61: Run the pipeline created based on a template.
+38. Return to the original pipeline, open the copilot side pane if you closed it, and click Apply
+Improvements.
+39. In Copilot type What is the difference between Logistic Regression and Gradient Boosting
+and press [enter].
+NOTE: Copilot provides a lot of information and can provide more on your request!
+TIP: If you have a small monitor hide the Copilot side pane.
+40. Open the Nodes menu on the left.
+36
+41. Expand Miscellaneous and drag Open Source Code to drop it on the Data node.
+Figure 62:Open the Nodes pane and expand Miscellaneous.
+Figure 63: Drag the Open Source Code node and drop it on top of the Data node.
+37
+42. Click Open code editor.
+Figure 64: With the open source code node selected open the code editor.
+43. Go to GitHub using the link https://github.com/sassoftware/sas-viya-quick-start.
+44. Open Train_HOMEEQUITY.txt.
+45. Click Copy raw file.
+Figure 65: Copy the raw file from github.
+38
+46. And in the Training Code section use Ctrl + V to paste.
+Figure 66: Add the copied text in the Training Code section using Ctrl+V.
+47. Return to github.
+48. Open Score_HOMEEQUITY.txt.
+49. Click Copy raw file.
+50. Paste in the Scoring Code section using Ctrl + V.
+51. Click Save.
+52. Click Close.
+Figure 67: Paste the scoring code in the Scoring Tab section and click Save and Close.
+39
+53. In the Options pane (with the Open source code node selected) expand Data Sample and
+remove the checkmark for Include SAS formats.
+54. Right-click Open Source Code.
+55. In the Move menu select Supervised Learning.
+Figure 68: Move the open source code node to supervised learning.
+56. Click Run pipeline.
+Figure 69: Run the pipeline.
+40
+57. Right-click the Model Comparison node.
+58. Click Results and analyze the provided information.
+Figure 70: Open the results for the Model Comparison.
+59. Click Maximize view and verify the available details for the Model comparison object. Take
+special of those for the Champion model.
+Figure 71: In the Node tab and most other tab you can maximize the objects.
+41
+60. Click Close.
+Figure 72: To leave the maximized object box click Close.
+61. Open the Assessment pane to analyze the available options for the various objects. Change
+the graph types to analyze all aspects.
+62. Click Export to PDF and verify the available options.
+Figure 73: The objects in the assessment tab. Graph types can be changes easily.
+63. Click Cancel.
+64. Click Close.
+42
+65. Right-click the Gradient Boosting node. It has the champion icon in the bottom left corner.
+NOTE: If you have a different champion node select that node.
+Figure 74: Open the Results.
+43
+66. Click Results and analyze the provided information in the Node tab. Use the Maximize view
+option for the objects.
+NOTE: The text produced with NLG that provides explanatory information.
+Figure 75: The results for the supervised learning nodes have detailed information.
+Don't forget to maximize the objects in the results view for access to NLG explanations.
+44
+67. Open the Assessment tab and anlyze the information provided in the many objects.
+Figure 76: The objects in the assessment tab.
+45
+68. Open the Fairness and Bias tab that has the information related to fairness and bias for the
+JOB variable.
+NOTE: Take special notice of the differences for Performance Bias.
+QUESTION: What can explain these differences in your opinion?
+Figure 77: The objects in the Fairness and Bias tab.
+69. Click Close.
+70. Right-click Gradient Boosting.
+71. Select Rename.
+72. Type *CC*_*UNI*_*MMMYY*_*yourinitials*_Champion.
+46
+73. Click OK.
+Figure 78: Rename the champion node in all pipelines. TIP:The champion node has a small icon bottom left.
+74. Also rename the champion model in the pipeline named Advanced template for class target.
+NOTE: Renaming these champion models will make it easier to find them when the overall
+champion model, registered in the next step, is needed for the decision flow in part 6.
+75. Click Pipeline Comparison to review the opened tab and analyze the items. The overall
+champion model has a star in table at the top.
+Figure 79: Open the Pipeline Comparison tab.
+NOTE: The full pipeline comparison tab is displayed on the next page.
+47
+Figure 80: The Pipeline Comparison page and its objects.
+48
+76. Right-click the Champion row.
+77. Click Register models.
+Figure 81: Register the overall champion model.
+78. Click OK.
+79. Click Close.
+Figure 82: Complete the registration process.
+49
+80. Select Insights.
+Figure 83: Open the Insights tab.
+81. The Project Summary is provided through NLG.
+82. Click Maximize view to analyze details for objects.
+Figure 84: The Insights page and its objects.
+Course 8, listed in the appendix, provides detailed information and practices to learn more about
+some of the available supervised machine learning algorithms in SAS Viya for Learners.
+50
+Trustworthy AI across the data and AI life cycle
+Advances in AI have reshaped business, societies and individual lives, and has given us a deeper
+understanding of our planet and the cosmos. We’ve only just begun to see how it could unlock human
+potential. But without the right safeguards, it could also produce harm. That’s why it’s essential to
+create AI systems that are ethical, equitable and sustainable.
+The SAS Trustworthy AI Life Cycle outlines steps for evaluating and deploying a more trustworthy AI
+system. It aims to make the U.S. National Institute of Standards and Technology's (NIST)
+recommendations, standards, and best practices for AI risk management easier to adopt and follow.
+The life cycle helps organizational stakeholders specify individual roles and expectations, gather
+required documentation, and outline factors for consideration. As a result, teams can produce
+documentation to support the assertion that the organization has done its due diligence to provide
+evidence that the model is fair and its processes do not cause harm.
+The SAS Trustworthy AI Life Cycle is a stepwise process organized into sections. Many tasks in the life
+cycle reflect guidelines put forth by the NIST AI Risk Management Framework Playbook as it appeared
+in October 2023. You can find more information about the trustworthy AI life cycle sample workflow via
+this GitHub link.
+A Trustworthy AI approach injects fairness and oversight at every step of the AI and analytics journey,
+so you can tackle complex data and analytics challenges in a responsible manner.
+SAS Viya is an end-to-end data and analytics platform that enables trustworthy practices at every stage
+of the AI and analytics lifecycle, from development to deployment. With intuitive visual interfaces, a
+centralized platform that enhances and encourages collaboration, AI-driven automation, and more,
+anyone can generate trusted outcomes from their data.
+The SAS Model Manager model card provides an easy-to-understand summary of a model, its training
+data, performance, intended use, limitations and governance. It helps stakeholders assess whether
+the model is appropriate, trustworthy and being used responsibly. When a model moves into
+production, the model card also provides an excellent starting point for documenting the AI project and
+the information needed to manage it responsibly throughout its life cycle.
+The model card does not declare that a model is trustworthy. It provides evidence that people can use
+to assess its trustworthiness.
+51
+Task 5: View a model card
+In this task, you open and review the model card for the registered champion model. The model card is
+a good starting point for documentation. It should be completed with relevant information.
+Step-by-step instructions
+These instructions assume you have already entered a SAS Viya for Learners session.
+1. Open Applications menu (nine dots).
+2. Select Manage Models.
+3. In the left menu click Models.
+4. In the search field type *CC*_*UNI* (for me that is PT_SAS) and click the search icon.
+Figure 85: Open the models menu item and search for *CC*_*UNI*.
+5. Click the model with the name you provided.
+Figure 86: Open the model you have registered.
+52
+6. Review the model card.
+Figure 87: The initial view of the model card.
+A standard hands-on session does not provide enough time to explore and customize the model card in
+detail. If you are interested please send an email to emeagapsupport@sas.com with a request for more
+details on model cards referring to this document.
+Task 6: Create a decision flow
+You learn how to integrate the champion model into a decision flow that can automatically send emails
+to loan applicants to inform them that their loan request has been accepted or rejected. The email
+provides a reason for the decision.
+Step-by-step instructions
+These instructions assume you have already entered a SAS Viya for Learners session.
+1. Open Applications menu (nine dots).
+2. Select Build Decisions.
+3. In the left menu click Decisions.
+Figure 88: Open Decisions.
+53
+4. Open the Loan Decision (Final).
+Figure 89: Open Loan Decision (Final).
+5. The Decision Flow tab has a visual representation of the decision flow.
+Figure 90: The decision flow.
+54
+6. The second node in the pipeline, called a model node, refers to a model that is registered with
+the name Gradient Boosting (Pipeline 1).
+Figure 91: The model node.
+7. The third node, named P_BAD1<.2, is a Yes/No branch node.
+The flow follows the Yes path, if the probability of default is less than 0.2.
+The No path is followed for the other cases.
+8. The blue rule set node in the No branch has the name Declined Application (Final).
+Figure 92: The branch and one rule set node.
+55
+9. The blue rule set node in the Yes branch has the name Check Debt to Income (Final).
+NOTE: In the rule set for this node the debt to income ratio is checked and only when it is below
+40 the loan is approved.
+10. The node before the End node, is a Data Query node named: Create Email Message (Final).
+Figure 93: The rule set node for the Yes path and the Data Query node.
+If you would like to practice the creation of a decision flow similar to the one that is shown here based
+on the model you created and registered, please send an email to emeagapsupport@sas.com with a
+request for step-by-step instructions referring to this document.
+This completes the document. We hope you have enjoyed the learning opportunity. We intend to
+complete a workbook in the first week of December. It will expand on the use case by providing
+additional practices for each of the six tasks described here. If you are interested, please send an email
+to emeagapsupport@sas.com with a request for the workbook referring to this document.
+The workbook will contain practices to:
+1. Recreate the SAS program for importing and loading data using a low-code/no-code interface.
+2. Add additional pages to the SAS Visual Analytics report that:
+a. Allow statistical analysis of variables in order to assist with feature engineering.
+b. Deploy a geographic map;
+c. Use SAS Visual Statistics objects to create and compare models.
+3. Enrich and improve the models in SAS Model Studio.
+4. Enrich information in SAS Information Catalog for the HOMEEQUITY dataset.
+5. Enhance the information in the model card.
+6. Create a decision flow using the champion model registered by you.
+56
+Appendix
+Recommendations for self-study
+e-Learning course Recommended audience SAS Skill Builder for Students location
+1 SAS Programming 1: Essentials Anyone starting to write SAS programs. » Learning Paths by Topic
+» SAS Programming
+» SAS Programming 1: Essentials
+2 SAS Programming 2: Data Business analysts and SAS programmers. » Learning Paths by Topic
+Manipulation Techniques Together with Course 1, this course provides a » SAS Programming
+foundation for SAS programming. » SAS Programming 2: Data Manipulation Techniques
+3 Managing and Querying Data Using Professionals seeking to leverage SAS Studio » Learning Paths by Topic
+Flows in SAS Studio for data access and preparation. » SAS Programming
+» Managing and Querying Data Using Flows in SAS Studio
+4 SAS Visual Analytics 1 for SAS Business analysts who need an introduction to » Learning Paths by Topic
+Viya: Basics the functionality provided by SAS Visual » Data Literacy and Data Visualization
+Analytics. » SAS Visual Analytics 1 for SAS Viya: Basics
+5 SAS Visual Analytics 2 for SAS Business analysts who need to use advanced » Learning Paths by Topic
+Viya: Advanced functionality provided by SAS Visual Analytics. » Data Literacy and Data Visualization
+» SAS Visual Analytics 2 for SAS Viya: Advanced
+6 Responsible Innovation and Data consumers, IT professionals, managers, » Learning Paths by Topic
+Trustworthy AI analysts, data scientists, and anyone else who » Statistical Analysis, Predictive Modeling and Machine Learning in SAS Viya
+uses, designs, consumes information from, or » Responsible Innovation and Trustworthy AI
+makes decisions based on data and AI.
+7 Statistics You Need to Know for Anyone in the field of data science who does » Learning Paths by Topic
+Machine Learning not yet have a deep understanding of » Statistical Analysis, Predictive Modeling and Machine Learning in SAS Viya
+statistical and machine learning concepts or » Statistics You Need to Know for Machine Learning
+wants to enhance their knowledge. We
+recommend this course to everyone who is
+interested in data science as a starting point
+for refreshing and extending their knowledge of
+statistics.
+8 Machine Learning Using SAS Viya Business analysts, data analysts, marketing » Learning Paths by Topic
+analysts, marketing managers, data scientists, » Statistical Analysis, Predictive Modeling and Machine Learning in SAS Viya
+data engineers, financial analysts, data miners, » Machine Learning Using SAS Viya
+statisticians, mathematicians, and others who
+work in related fields.
